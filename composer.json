@@ -1,0 +1,12 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.4",
+        "slim/twig-view": "3.0",
+        "ext-pdo": "*",
+        "slim/php-view": "^3.0",
+        "monolog/monolog": "^2.3",
+        "symfony/polyfill-uuid": "^1.23",
+        "symfony/http-foundation": "^5.4"
+    }
+}

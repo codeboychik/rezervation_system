@@ -1,0 +1,74 @@
+*{font-family: "Open Sans"}
+body{
+    background-image: url("./templates/images/mendelu.jpg");
+    background-repeat: no-repeat;
+    background-size:150%;
+}
+main{
+
+    width:fit-content;
+    align-items: center;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    background-color: rgba(255,255,255,0.7);
+
+}
+
+div{
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+    justify-content: space-between;
+    width: fit-content;
+
+}
+
+#smallWidth{
+    display: none;
+}
+
+.form{
+
+    background-color: rgb(120,190,20);
+
+}
+
+form{
+white-space: nowrap;
+box-sizing: border-box;
+margin: 50px 50px 30px 50px;
+
+}
+
+.text{
+    margin: 50px;
+    display: inline-block;
+
+}
+
+a{
+    white-space: nowrap;
+    font-size: 36px;
+    font-family: "Open Sans ExtraBold";
+}
+
+
+@media only screen and (max-width: 960px) {
+    main{
+        width: 90%;
+    }
+    div{
+        display: block;
+    }
+    .form{
+        padding: 30px 30px 30px 30px;
+        width: fit-content;
+        margin: auto auto 100px;
+    }
+
+}
+

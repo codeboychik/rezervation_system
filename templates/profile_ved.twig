@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                    $(function () {
+                            $('#oteviraci_doba').click(function () {
+                                $(".form-date-time").slideToggle(200);
+                            })
+                        }
+                    )
+                $(function () {
+                    $('#pridelit_zamestnance').click(function () {
+                        $(".form-attach-employee").slideToggle(200);
+                    })
+                }
+                )
+                }
+            );
+        </script>
+        <style>
+            *{
+                box-sizing: border-box;
+                font-family: "Rubik";
+            }
+            body{
+                margin: 0;
+            }
+            main{
+                position: relative;
+                width: 80vw;
+                margin: auto;
+            }
+            nav,footer{
+                height: 70px;
+                background-color: orangered;
+            }
+            nav ul{
+                display: flex;
+                justify-content: space-between;
+                list-style-type: none;
+                line-height: 4.5em;
+                margin: auto 30px 0 0;
+            }
+            table{
+                width: 100%;
+                border: 2px solid black;
+                margin-bottom: 5%;
+            }
+            table tr{
+                border: 2px solid black;
+            }
+            tr{
+                text-align: left;
+            }
+            .form-date-time{
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                top: 70px;
+                right: 50px;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                padding: 12px 16px;
+                z-index: 1;
+            }
+            .form-attach-employee{
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                top: 70px;
+                right: 0px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                padding: 12px 16px;
+                z-index: 1;
+            }
+            #oteviraci_doba:hover,#pridelit_zamestnance:hover{
+                background-color: rgba(120,190,20,0.5);
+            }
+
+            .rez-header{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 6%;
+            }
+            #oteviraci_doba{
+                height: 40px;
+                background-color: rgb(120,190,20);
+                border: 0;
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+            input{
+                width: 70px;
+            }
+            #pridelit_zamestnance{
+                height: 40px;
+                background-color: rgb(120,190,20);
+                border: 0;
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+            .zrusit{
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid black;
+                float: right;
+            }
+            .zrusit:hover{
+                transition: 0.3s;
+                background-color: rgb(120,190,20);
+            }
+            footer{
+                position:absolute;
+                bottom:0;
+                width:100%;
+            }
+            #odhl:visited{
+                color: black;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+{% block nav %}
+    <nav>
+        <ul>
+            <li>Dobrý den,{{ first_name }}</li>
+
+            <li>Dnešní otevirací doba:{{ time_from|date('H:i') }}-{{ time_to|date('H:i') }}</li>
+
+            <li><a id="odhl" href="{{ username }}/logout">Odlhásit se</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+<main>
+    {% block main %}
+        <div class="rez-header">
+            <H1>Všechny rezervace</H1>
+            <button id="oteviraci_doba">+ otevírací doba</button>
+            <div class="form-date-time">
+                <form method="post" action="{{ username }}/new_optime">
+                    <label for="optime_date">Datum:</label>
+                    <input type="date" name="optime_date">
+                    <label for="time_from">Z:</label>
+                    <input type="time" name="time_from">
+                    <label for="time_to">Po:</label>
+                    <input type="time" name="time_to">
+                    <input type="submit">
+                </form>
+            </div>
+            <button id="pridelit_zamestnance">+ přídělit zamestnance</button>
+            <div class="form-attach-employee">
+                <form method="post" action="{{ username }}/attach_empl">
+                    <label for="first_name">Jmeno:</label>
+                    <input type="text" name="first_name">
+                    <label for="last_name">Příjmení:</label>
+                    <input type="text" name="last_name">
+                    <label for="object_of_study">Obor:</label>
+                    <input type="text" name="object_of_study">
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Čas</th>
+                <th>Student</th>
+                <th>Obor</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for apts in appointment %}
+                {% set id = apts['id'] %}
+                <tr>
+                    <td>{{ apts['aptdate']|date("d/m/Y")  }}</td>
+                    <td>{{ apts['apttime']|date('H:i') }}</td>
+                    <td>{{ apts['student_id'] }}</td>
+                    <td>{{ apts['object_of_study'] }}</td>
+                    <td><a class="zrusit" href="{{ username }}/delete/{{ id }}"> Zrušit </a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <H1>Otevírací doby</H1>
+        <table>
+            <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Z</th>
+                <th>Po</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for opt in opening_time %}
+                <tr>
+                    <td>{{ opt['optime_date']|date("d/m/Y")  }}</td>
+                    <td>{{ opt['time_from']|date('H:i') }}</td>
+                    <td>{{ opt['time_to']|date('H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <table>
+            <thead>
+            <tr>
+                <th>Zaměstnanec</th>
+                <th>Datum z</th>
+                <th>Čas z</th>
+                <th>Datum po</th>
+                <th>Čas po</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vac in vacation %}
+                <tr>
+                    <td>{{ vac['employee_id'] }}</td>
+                    <td>{{ vac['date_from']|date("d/m/Y")  }}</td>
+                    <td>{{ vac['time_from']|date('H:i') }}</td>
+                    <td>{{ vac['date_to']|date("d/m/Y")  }}</td>
+                    <td>{{ vac['time_to']|date('H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}
+</main>
+
+<footer></footer>
+</body>
+</html>
